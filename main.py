@@ -38,18 +38,19 @@ class OperateMydb:
 
             cursor.execute('INSERT INTO custommer (name, address, client_since, phone_1) \
                 VALUES (%s, %s, %s, %s)', (name, address, date_now, phone1))
+        self.connection.commit()
 
         self.disconnect()
 
     def print_from_table(self):
-
-        self.cursor.execute('SELECT * FROM custommer')
-        result = self.cursor.fetchall()
-        print(result)
-
-        self.cursor.close()
-        self.connection.close()
+        self.connect()
+        with self.connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM custommer')
+            result = cursor.fetchall()
+            print(result)
+        
+        self.disconnect()
 
 ops1 = OperateMydb()
-ops1.insert_custommer()
-# ops1.print_from_table()
+# ops1.insert_custommer()
+ops1.print_from_table()
